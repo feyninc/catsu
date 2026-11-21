@@ -45,6 +45,14 @@ pub enum ClientError {
     #[error("Request timed out")]
     Timeout,
 
+    /// The provider host has failed repeatedly and its circuit breaker is
+    /// open, so the request was not sent.
+    #[error("Circuit open for {host}: provider is failing, retry after {retry_after_ms:?} ms")]
+    CircuitOpen {
+        host: String,
+        retry_after_ms: Option<u64>,
+    },
+
     /// Missing API key
     #[error("Missing API key for provider: {provider}")]
     MissingApiKey { provider: String },
